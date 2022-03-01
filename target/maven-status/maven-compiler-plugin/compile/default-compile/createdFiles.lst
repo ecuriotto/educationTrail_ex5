@@ -1,0 +1,8 @@
+org/camunda/education/EducationTrail/educationalTrailEx5AndLater/delegates/CheckWeather.class
+org/camunda/education/EducationTrail/educationalTrailEx5AndLater/CamundaBpmProcessApplication.class
+org/camunda/education/EducationTrail/educationalTrailEx5AndLater/LoggerDelegate.class
+org/camunda/education/EducationTrail/educationalTrailEx5AndLater/delegates/CompensateBookHike.class
+org/camunda/education/EducationTrail/educationalTrailEx5AndLater/ProcessConstants.class
+org/camunda/education/EducationTrail/educationalTrailEx5AndLater/delegates/CompensateBookParagliding.class
+org/camunda/education/EducationTrail/educationalTrailEx5AndLater/delegates/BookParagliding.class
+org/camunda/education/EducationTrail/educationalTrailEx5AndLater/delegates/BookHike.class

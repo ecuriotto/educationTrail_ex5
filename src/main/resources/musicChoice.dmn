@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" id="Definitions_0jrl1kk" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="4.11.1">
+  <decision id="musicChoice" name="Music choice">
+    <decisionTable id="DecisionTable_1c8vj13">
+      <input id="Input_1" label="Mood">
+        <inputExpression id="InputExpression_1" typeRef="string">
+          <text>mood</text>
+        </inputExpression>
+        <inputValues id="UnaryTests_0d7syah">
+          <text>"happy","sad"</text>
+        </inputValues>
+      </input>
+      <input id="InputClause_0eh8q49" label="Time in day">
+        <inputExpression id="LiteralExpression_0yvluzc" typeRef="string">
+          <text>timeInDay</text>
+        </inputExpression>
+        <inputValues id="UnaryTests_0kidxsl">
+          <text>"night","day"</text>
+        </inputValues>
+      </input>
+      <output id="Output_1" label="Singer" name="singer" typeRef="string" />
+      <rule id="DecisionRule_0lcqtk5">
+        <inputEntry id="UnaryTests_0ph37v7">
+          <text>"happy"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1uzcpi3">
+          <text>"day"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_01fn4bt">
+          <text>"Santana"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_05b2fyz">
+        <inputEntry id="UnaryTests_1dx8jip">
+          <text>"happy"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1vgx5qs">
+          <text>"night"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0vrbj73">
+          <text>"Ozric tentacles"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1e7tqqk">
+        <inputEntry id="UnaryTests_0bowl6n">
+          <text>"sad"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1w2uv1n">
+          <text>"day"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_01f2tpx">
+          <text>"Depeche mode"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1x28idv">
+        <inputEntry id="UnaryTests_1ml2n52">
+          <text>"sad"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1wgcw2h">
+          <text>"night"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0h6hd3t">
+          <text>"Cure"</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram>
+      <dmndi:DMNShape dmnElementRef="musicChoice">
+        <dc:Bounds height="80" width="180" x="160" y="100" />
+      </dmndi:DMNShape>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</definitions>
