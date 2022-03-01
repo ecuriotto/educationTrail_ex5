@@ -1,22 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" id="Definitions_0jrl1kk" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="4.11.1">
   <decision id="musicChoice" name="Music choice">
-    <decisionTable id="DecisionTable_1c8vj13">
+    <decisionTable id="DecisionTable_1c8vj13" hitPolicy="FIRST">
       <input id="Input_1" label="Mood">
         <inputExpression id="InputExpression_1" typeRef="string">
           <text>mood</text>
         </inputExpression>
         <inputValues id="UnaryTests_0d7syah">
-          <text>"happy","sad"</text>
+          <text>"happy","sad","concentrated"</text>
         </inputValues>
       </input>
       <input id="InputClause_0eh8q49" label="Time in day">
-        <inputExpression id="LiteralExpression_0yvluzc" typeRef="string">
+        <inputExpression id="LiteralExpression_0yvluzc" typeRef="long">
           <text>timeInDay</text>
         </inputExpression>
-        <inputValues id="UnaryTests_0kidxsl">
-          <text>"night","day"</text>
-        </inputValues>
       </input>
       <output id="Output_1" label="Singer" name="singer" typeRef="string" />
       <rule id="DecisionRule_0lcqtk5">
@@ -24,7 +21,7 @@
           <text>"happy"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1uzcpi3">
-          <text>"day"</text>
+          <text>[0..9]</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_01fn4bt">
           <text>"Santana"</text>
@@ -35,10 +32,21 @@
           <text>"happy"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1vgx5qs">
-          <text>"night"</text>
+          <text>[10..19]</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0vrbj73">
           <text>"Ozric tentacles"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0cok7yw">
+        <inputEntry id="UnaryTests_1ctv5um">
+          <text>"happy","concentrated"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0lvb9tq">
+          <text>[20..24]</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1dl7ypt">
+          <text>"Pj Harvey"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_1e7tqqk">
@@ -46,7 +54,7 @@
           <text>"sad"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1w2uv1n">
-          <text>"day"</text>
+          <text>[0..12]</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_01f2tpx">
           <text>"Depeche mode"</text>
@@ -57,10 +65,21 @@
           <text>"sad"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1wgcw2h">
-          <text>"night"</text>
+          <text>[13..24]</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0h6hd3t">
           <text>"Cure"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1u6snxi">
+        <inputEntry id="UnaryTests_0wxvbqa">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_194c7rb">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0vffln6">
+          <text>"Supertramp"</text>
         </outputEntry>
       </rule>
     </decisionTable>

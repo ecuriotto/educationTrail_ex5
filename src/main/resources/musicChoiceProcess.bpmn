@@ -9,7 +9,7 @@
       <bpmn:extensionElements>
         <camunda:formData>
           <camunda:formField id="mood" label="Mood" type="string" defaultValue="happy" />
-          <camunda:formField id="timeInDay" label="time in day (day or night)" type="string" />
+          <camunda:formField id="timeInDay" label="time in day (0-24)" type="long" />
         </camunda:formData>
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_0nzp605</bpmn:incoming>
