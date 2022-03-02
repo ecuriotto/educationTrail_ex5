@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_10iurdn" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="4.11.1" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.15.0">
+  <bpmn:process id="votingProcess" name="votingProcess" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1">
+      <bpmn:outgoing>Flow_0wyssr4</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_0wyssr4" sourceRef="StartEvent_1" targetRef="Gateway_0nxtvn1" />
+    <bpmn:sequenceFlow id="Flow_0od3mxt" sourceRef="voteActivity" targetRef="Activity_02ay9a5" />
+    <bpmn:endEvent id="Event_0hbo9ai" name="End process">
+      <bpmn:incoming>Flow_1oq1hp4</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_1oq1hp4" sourceRef="Activity_02ay9a5" targetRef="Event_0hbo9ai" />
+    <bpmn:userTask id="Activity_02ay9a5" name="See result">
+      <bpmn:extensionElements>
+        <camunda:taskListener event="create">
+          <camunda:script scriptFormat="groovy">def resultString = ""
+def resultAggregate = task.getVariable("resultAggregate");
+println(resultAggregate);
+resultAggregate.each {val -&gt; resultString+="-"+val}
+task.execution.setVariable("resultString",resultString);
+println(resultString);</camunda:script>
+        </camunda:taskListener>
+        <camunda:formData>
+          <camunda:formField id="resultString" label="resultString" type="string" />
+        </camunda:formData>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0od3mxt</bpmn:incoming>
+      <bpmn:outgoing>Flow_1oq1hp4</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_16u42fg" sourceRef="Activity_1ssey45" targetRef="voteActivity" />
+    <bpmn:scriptTask id="Activity_1ssey45" name="set voters" camunda:asyncAfter="true" scriptFormat="javascript">
+      <bpmn:incoming>Flow_0qbh1u1</bpmn:incoming>
+      <bpmn:outgoing>Flow_16u42fg</bpmn:outgoing>
+      <bpmn:script>var voters = ["Pippo","Pluto"];
+print(typeof voters)
+execution.setVariable("voters",voters);</bpmn:script>
+    </bpmn:scriptTask>
+    <bpmn:exclusiveGateway id="Gateway_0nxtvn1" default="Flow_0qbh1u1">
+      <bpmn:incoming>Flow_0wyssr4</bpmn:incoming>
+      <bpmn:outgoing>Flow_0qbh1u1</bpmn:outgoing>
+      <bpmn:outgoing>Flow_10g9843</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_0qbh1u1" sourceRef="Gateway_0nxtvn1" targetRef="Activity_1ssey45" />
+    <bpmn:sequenceFlow id="Flow_10g9843" sourceRef="Gateway_0nxtvn1" targetRef="Activity_0je9e73">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${1==1}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_1q3vivy" sourceRef="Activity_0je9e73" targetRef="voteActivity" />
+    <bpmn:serviceTask id="Activity_0je9e73" name="Set voters service task" camunda:class="org.camunda.education.EducationTrail.educationalTrailEx5AndLater.delegates.SetVoters">
+      <bpmn:incoming>Flow_10g9843</bpmn:incoming>
+      <bpmn:outgoing>Flow_1q3vivy</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:userTask id="voteActivity" name="Vote">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="voteVar" label="vote" type="boolean" />
+        </camunda:formData>
+        <camunda:taskListener class="org.camunda.education.EducationTrail.educationalTrailEx5AndLater.delegates.AggregateVotes" event="complete" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_16u42fg</bpmn:incoming>
+      <bpmn:incoming>Flow_1q3vivy</bpmn:incoming>
+      <bpmn:outgoing>Flow_0od3mxt</bpmn:outgoing>
+      <bpmn:multiInstanceLoopCharacteristics camunda:collection="voters" camunda:elementVariable="voter" />
+    </bpmn:userTask>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="votingProcess">
+      <bpmndi:BPMNEdge id="Flow_1q3vivy_di" bpmnElement="Flow_1q3vivy">
+        <di:waypoint x="430" y="260" />
+        <di:waypoint x="450" y="260" />
+        <di:waypoint x="450" y="140" />
+        <di:waypoint x="470" y="140" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_10g9843_di" bpmnElement="Flow_10g9843">
+        <di:waypoint x="260" y="142" />
+        <di:waypoint x="260" y="260" />
+        <di:waypoint x="330" y="260" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0qbh1u1_di" bpmnElement="Flow_0qbh1u1">
+        <di:waypoint x="285" y="117" />
+        <di:waypoint x="330" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_16u42fg_di" bpmnElement="Flow_16u42fg">
+        <di:waypoint x="430" y="117" />
+        <di:waypoint x="470" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1oq1hp4_di" bpmnElement="Flow_1oq1hp4">
+        <di:waypoint x="760" y="117" />
+        <di:waypoint x="842" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0od3mxt_di" bpmnElement="Flow_0od3mxt">
+        <di:waypoint x="570" y="117" />
+        <di:waypoint x="660" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0wyssr4_di" bpmnElement="Flow_0wyssr4">
+        <di:waypoint x="188" y="117" />
+        <di:waypoint x="235" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="152" y="99" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0hbo9ai_di" bpmnElement="Event_0hbo9ai">
+        <dc:Bounds x="842" y="99" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="829" y="142" width="62" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0uncc1m_di" bpmnElement="Activity_02ay9a5">
+        <dc:Bounds x="660" y="77" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1cw7oj6_di" bpmnElement="Activity_1ssey45">
+        <dc:Bounds x="330" y="77" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_0nxtvn1_di" bpmnElement="Gateway_0nxtvn1" isMarkerVisible="true">
+        <dc:Bounds x="235" y="92" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1wayoqd_di" bpmnElement="Activity_0je9e73">
+        <dc:Bounds x="330" y="220" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1ln9p16_di" bpmnElement="voteActivity">
+        <dc:Bounds x="470" y="77" width="100" height="80" />
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

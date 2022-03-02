@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_0bom02t" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="4.11.1" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.15.0">
+  <bpmn:collaboration id="Collaboration_1wikle6">
+    <bpmn:participant id="Participant_1upbdi1" name="zico" processRef="zico" />
+    <bpmn:participant id="Participant_1u5evnc" name="platini" processRef="platini" />
+  </bpmn:collaboration>
+  <bpmn:process id="zico" name="Zico" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1">
+      <bpmn:outgoing>Flow_0pmnarw</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:task id="Activity_0cu12ji" name="Take the ball">
+      <bpmn:incoming>Flow_0pmnarw</bpmn:incoming>
+      <bpmn:outgoing>Flow_0xtzvzh</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:intermediateThrowEvent id="ballPassed" name="ballPassed">
+      <bpmn:incoming>Flow_0xtzvzh</bpmn:incoming>
+      <bpmn:outgoing>Flow_0kdi420</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_1he37gp" messageRef="Message_1izzvxy" camunda:class="org.camunda.education.EducationTrail.educationalTrailEx5AndLater.delegates.PassBall" />
+    </bpmn:intermediateThrowEvent>
+    <bpmn:task id="Activity_0q2rzqq" name="Run" camunda:asyncBefore="true">
+      <bpmn:incoming>Flow_0kdi420</bpmn:incoming>
+      <bpmn:outgoing>Flow_1kz520j</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:intermediateCatchEvent id="ballCaught" name="ballCaught">
+      <bpmn:incoming>Flow_0vtf606</bpmn:incoming>
+      <bpmn:outgoing>Flow_1lv08yw</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_1thalds" messageRef="Message_1m12coi" />
+    </bpmn:intermediateCatchEvent>
+    <bpmn:endEvent id="gameplayEnded" name="gameplay ended">
+      <bpmn:incoming>Flow_007z1ai</bpmn:incoming>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_1nr0h23" />
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_0pmnarw" sourceRef="StartEvent_1" targetRef="Activity_0cu12ji" />
+    <bpmn:sequenceFlow id="Flow_0xtzvzh" sourceRef="Activity_0cu12ji" targetRef="ballPassed" />
+    <bpmn:sequenceFlow id="Flow_0kdi420" sourceRef="ballPassed" targetRef="Activity_0q2rzqq" />
+    <bpmn:sequenceFlow id="Flow_1kz520j" sourceRef="Activity_0q2rzqq" targetRef="Event_01gkhjt" />
+    <bpmn:sequenceFlow id="Flow_1lv08yw" sourceRef="ballCaught" targetRef="Activity_0r93qew" />
+    <bpmn:sequenceFlow id="Flow_007z1ai" sourceRef="Activity_0r93qew" targetRef="gameplayEnded" />
+    <bpmn:scriptTask id="Activity_0r93qew" name="Shoot" scriptFormat="javascript">
+      <bpmn:incoming>Flow_1lv08yw</bpmn:incoming>
+      <bpmn:outgoing>Flow_007z1ai</bpmn:outgoing>
+      <bpmn:script>var resultOfShooting ="no goal";
+var goodPass = execution.getVariable("goodPass");
+print("Zico the pass was " + goodPass + "/10 good");
+
+
+var shootingPower = Math.floor(Math.random() * 10);
+var precision = Math.floor(Math.random() * 10);
+var shootPerformance = goodPass + shootingPower + precision;
+if(shootPerformance&gt;18){
+  resultOfShooting = "goal";
+}
+
+execution.setVariable("shootPerformance",shootPerformance);
+execution.setVariable("resultOfShooting",resultOfShooting);
+print("Zico shootPerformance " + shootPerformance);
+print("Zico resultOfShooting " + resultOfShooting);
+</bpmn:script>
+    </bpmn:scriptTask>
+    <bpmn:sequenceFlow id="Flow_0vtf606" sourceRef="Event_01gkhjt" targetRef="ballCaught" />
+    <bpmn:intermediateCatchEvent id="Event_01gkhjt" name="wait 5s">
+      <bpmn:incoming>Flow_1kz520j</bpmn:incoming>
+      <bpmn:outgoing>Flow_0vtf606</bpmn:outgoing>
+      <bpmn:timerEventDefinition id="TimerEventDefinition_0j4cse3">
+        <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">PT5S</bpmn:timeDuration>
+      </bpmn:timerEventDefinition>
+    </bpmn:intermediateCatchEvent>
+  </bpmn:process>
+  <bpmn:process id="platini" name="Platini" isExecutable="true">
+    <bpmn:startEvent id="ballReceived" name="ballReceived">
+      <bpmn:outgoing>Flow_0tfil76</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_0702fk8" messageRef="Message_1izzvxy" />
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_0tfil76" sourceRef="ballReceived" targetRef="Activity_1eyhqcn" />
+    <bpmn:sequenceFlow id="Flow_1894zqv" sourceRef="Activity_1eyhqcn" targetRef="Event_1jpjxfi" />
+    <bpmn:endEvent id="ballPassedBack" name="ballPassedBack">
+      <bpmn:incoming>Flow_0mjcl1b</bpmn:incoming>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_1bnd9rl" messageRef="Message_1m12coi" camunda:class="org.camunda.education.EducationTrail.educationalTrailEx5AndLater.delegates.PassBallBack" />
+    </bpmn:endEvent>
+    <bpmn:scriptTask id="Activity_1eyhqcn" name="Dribbling" camunda:asyncBefore="true" scriptFormat="javascript">
+      <bpmn:incoming>Flow_0tfil76</bpmn:incoming>
+      <bpmn:outgoing>Flow_1894zqv</bpmn:outgoing>
+      <bpmn:script>var goodPass = Math.floor(Math.random() * 10);
+execution.setVariable("goodPass",goodPass);
+print("Platini - This is a pass of this quality (0-10): " + goodPass);</bpmn:script>
+    </bpmn:scriptTask>
+    <bpmn:sequenceFlow id="Flow_0mjcl1b" sourceRef="Event_1jpjxfi" targetRef="ballPassedBack" />
+    <bpmn:intermediateCatchEvent id="Event_1jpjxfi" name="1 sec">
+      <bpmn:incoming>Flow_1894zqv</bpmn:incoming>
+      <bpmn:outgoing>Flow_0mjcl1b</bpmn:outgoing>
+      <bpmn:timerEventDefinition id="TimerEventDefinition_0zjrjao">
+        <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">PT1S</bpmn:timeDuration>
+      </bpmn:timerEventDefinition>
+    </bpmn:intermediateCatchEvent>
+  </bpmn:process>
+  <bpmn:message id="Message_1izzvxy" name="ballPassed" />
+  <bpmn:message id="Message_1m12coi" name="ballPassedBack" />
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_1wikle6">
+      <bpmndi:BPMNShape id="Participant_1upbdi1_di" bpmnElement="Participant_1upbdi1" isHorizontal="true">
+        <dc:Bounds x="160" y="59" width="1030" height="250" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_0pmnarw_di" bpmnElement="Flow_0pmnarw">
+        <di:waypoint x="265" y="180" />
+        <di:waypoint x="320" y="180" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0xtzvzh_di" bpmnElement="Flow_0xtzvzh">
+        <di:waypoint x="420" y="180" />
+        <di:waypoint x="482" y="180" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0kdi420_di" bpmnElement="Flow_0kdi420">
+        <di:waypoint x="518" y="180" />
+        <di:waypoint x="590" y="180" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1kz520j_di" bpmnElement="Flow_1kz520j">
+        <di:waypoint x="690" y="180" />
+        <di:waypoint x="712" y="180" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1lv08yw_di" bpmnElement="Flow_1lv08yw">
+        <di:waypoint x="808" y="180" />
+        <di:waypoint x="870" y="180" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_007z1ai_di" bpmnElement="Flow_007z1ai">
+        <di:waypoint x="970" y="180" />
+        <di:waypoint x="1052" y="180" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0vtf606_di" bpmnElement="Flow_0vtf606">
+        <di:waypoint x="748" y="180" />
+        <di:waypoint x="772" y="180" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="229" y="162" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0cu12ji_di" bpmnElement="Activity_0cu12ji">
+        <dc:Bounds x="320" y="140" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_109dd17_di" bpmnElement="ballPassed">
+        <dc:Bounds x="482" y="162" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="473" y="205" width="54" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0q2rzqq_di" bpmnElement="Activity_0q2rzqq">
+        <dc:Bounds x="590" y="140" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1locjhw_di" bpmnElement="ballCaught">
+        <dc:Bounds x="772" y="162" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="764" y="205" width="53" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0ijrnxq_di" bpmnElement="gameplayEnded">
+        <dc:Bounds x="1052" y="162" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1029" y="205" width="82" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_16ow6nh_di" bpmnElement="Activity_0r93qew">
+        <dc:Bounds x="870" y="140" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_07zu9kz_di" bpmnElement="Event_01gkhjt">
+        <dc:Bounds x="712" y="162" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="713" y="205" width="35" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_1u5evnc_di" bpmnElement="Participant_1u5evnc" isHorizontal="true">
+        <dc:Bounds x="160" y="410" width="840" height="250" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_0tfil76_di" bpmnElement="Flow_0tfil76">
+        <di:waypoint x="268" y="520" />
+        <di:waypoint x="360" y="520" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1894zqv_di" bpmnElement="Flow_1894zqv">
+        <di:waypoint x="460" y="520" />
+        <di:waypoint x="532" y="520" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0mjcl1b_di" bpmnElement="Flow_0mjcl1b">
+        <di:waypoint x="568" y="520" />
+        <di:waypoint x="672" y="520" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Event_06xlebn_di" bpmnElement="ballReceived">
+        <dc:Bounds x="232" y="502" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="220" y="545" width="63" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_111pjxa_di" bpmnElement="ballPassedBack">
+        <dc:Bounds x="672" y="502" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="651" y="545" width="79" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0c2ew0b_di" bpmnElement="Activity_1eyhqcn">
+        <dc:Bounds x="360" y="480" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0g3779b_di" bpmnElement="Event_1jpjxfi">
+        <dc:Bounds x="532" y="502" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="537" y="545" width="27" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
