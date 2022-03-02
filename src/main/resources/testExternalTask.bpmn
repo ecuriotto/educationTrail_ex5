@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_0sqop6d" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="4.11.1" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.15.0">
+  <bpmn:process id="testExternalTask" name="testExternalTask" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1" name="Start process">
+      <bpmn:outgoing>Flow_0djs9d8</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_0djs9d8" sourceRef="StartEvent_1" targetRef="generateNumber" />
+    <bpmn:sequenceFlow id="Flow_1yacr4z" sourceRef="ExecPython" targetRef="ExecJava" />
+    <bpmn:sequenceFlow id="Flow_05i26o5" sourceRef="ExecJava" targetRef="ExecJavascript" />
+    <bpmn:endEvent id="Event_1bmx6iq" name="End process">
+      <bpmn:incoming>Flow_0k0qonf</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_0dn48rx" sourceRef="ExecJavascript" targetRef="Activity_0y0h281" />
+    <bpmn:serviceTask id="ExecPython" name="Exec python code" camunda:type="external" camunda:topic="pythonTask">
+      <bpmn:incoming>Flow_0qzcio4</bpmn:incoming>
+      <bpmn:outgoing>Flow_1yacr4z</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="ExecJava" name="Exec java code" camunda:type="external" camunda:topic="javaTask">
+      <bpmn:incoming>Flow_1yacr4z</bpmn:incoming>
+      <bpmn:outgoing>Flow_05i26o5</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="ExecJavascript" name="Exec javascript" camunda:type="external" camunda:topic="javascriptTask">
+      <bpmn:incoming>Flow_05i26o5</bpmn:incoming>
+      <bpmn:outgoing>Flow_0dn48rx</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_0k0qonf" sourceRef="Activity_0y0h281" targetRef="Event_1bmx6iq" />
+    <bpmn:scriptTask id="Activity_0y0h281" name="Write log" scriptFormat="javascript">
+      <bpmn:incoming>Flow_0dn48rx</bpmn:incoming>
+      <bpmn:outgoing>Flow_0k0qonf</bpmn:outgoing>
+      <bpmn:script>print("taskExternalTask process executed completely!")</bpmn:script>
+    </bpmn:scriptTask>
+    <bpmn:sequenceFlow id="Flow_0qzcio4" sourceRef="generateNumber" targetRef="ExecPython" />
+    <bpmn:scriptTask id="generateNumber" name="generate number" scriptFormat="javascript">
+      <bpmn:incoming>Flow_0djs9d8</bpmn:incoming>
+      <bpmn:outgoing>Flow_0qzcio4</bpmn:outgoing>
+      <bpmn:script>var randomNumber = Math.floor(Math.random() * 10);
+execution.setVariable("message","init - "+ randomNumber);</bpmn:script>
+    </bpmn:scriptTask>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="testExternalTask">
+      <bpmndi:BPMNEdge id="Flow_0djs9d8_di" bpmnElement="Flow_0djs9d8">
+        <di:waypoint x="208" y="120" />
+        <di:waypoint x="260" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1yacr4z_di" bpmnElement="Flow_1yacr4z">
+        <di:waypoint x="520" y="120" />
+        <di:waypoint x="560" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_05i26o5_di" bpmnElement="Flow_05i26o5">
+        <di:waypoint x="660" y="120" />
+        <di:waypoint x="740" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0dn48rx_di" bpmnElement="Flow_0dn48rx">
+        <di:waypoint x="840" y="120" />
+        <di:waypoint x="880" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0k0qonf_di" bpmnElement="Flow_0k0qonf">
+        <di:waypoint x="980" y="120" />
+        <di:waypoint x="1042" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0qzcio4_di" bpmnElement="Flow_0qzcio4">
+        <di:waypoint x="360" y="120" />
+        <di:waypoint x="420" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Activity_1jznuco_di" bpmnElement="ExecJava">
+        <dc:Bounds x="560" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1xj7ox6_di" bpmnElement="ExecJavascript">
+        <dc:Bounds x="740" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1bmx6iq_di" bpmnElement="Event_1bmx6iq">
+        <dc:Bounds x="1042" y="102" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1029" y="145" width="62" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1mxui45_di" bpmnElement="Activity_0y0h281">
+        <dc:Bounds x="880" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="172" y="102" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="158" y="145" width="65" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1cl3kt4_di" bpmnElement="generateNumber">
+        <dc:Bounds x="260" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0jctj63_di" bpmnElement="ExecPython">
+        <dc:Bounds x="420" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

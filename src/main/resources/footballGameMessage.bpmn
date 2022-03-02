@@ -3,6 +3,10 @@
   <bpmn:collaboration id="Collaboration_1wikle6">
     <bpmn:participant id="Participant_1upbdi1" name="zico" processRef="zico" />
     <bpmn:participant id="Participant_1u5evnc" name="platini" processRef="platini" />
+    <bpmn:textAnnotation id="TextAnnotation_16ypm94">
+      <bpmn:text>If a message is sent and the token is not yet in the catch, the engine will retry to send it several times</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association_1yqqmcj" sourceRef="ballCaught" targetRef="TextAnnotation_16ypm94" />
   </bpmn:collaboration>
   <bpmn:process id="zico" name="Zico" isExecutable="true">
     <bpmn:startEvent id="StartEvent_1">
@@ -200,6 +204,13 @@ print("Platini - This is a pass of this quality (0-10): " + goodPass);</bpmn:scr
           <dc:Bounds x="537" y="545" width="27" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="TextAnnotation_16ypm94_di" bpmnElement="TextAnnotation_16ypm94">
+        <dc:Bounds x="1100" y="400" width="194" height="68" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Association_1yqqmcj_di" bpmnElement="Association_1yqqmcj">
+        <di:waypoint x="805" y="190" />
+        <di:waypoint x="1127" y="400" />
+      </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
 </bpmn:definitions>
