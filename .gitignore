@@ -38,3 +38,6 @@ hs_err_pid*
 # Stray local directory accidentally placed in repo root
 Users/
 
+
+# Claude Code local files
+.claude/
